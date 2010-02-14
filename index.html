@@ -10,6 +10,8 @@
 
 	<script type="text/javascript" src="console.log.js"></script>
 
+	<!--	<script type="text/javascript" src="http://console-log-js.googlecode.com/svn/console.log.js"></script>-->
+
 	<script type="text/javascript">
 		/*\
 		opera.postError("test");
@@ -28,10 +30,10 @@
 
 		console.clear();
 
-//		console.log(console);
+		console.log(console);
 
-		/*\ Normal loggin /*\
-		
+		//*\ Normal loggin /*\
+
 		console.group("console");
 		console.log("log");
 		console.debug("debug");
@@ -92,19 +94,19 @@
 		console.log(/abc/gim);
 		console.log(new RegExp());
 		console.log(new RegExp(""));
-		console.log(new RegExp("abc","g"));
+		console.log(new RegExp("abc", "g"));
 		console.log(new RegExp("abc", "g", "i"));  // no more then 2 arguments;
 		console.log(new RegExp("abc", "mgi"));  // always gim;
 		console.log(new RegExp(/abc/));
 		console.log(new RegExp(/abc/g));
 		console.log(new RegExp(/abc/mgi));
 
-//		console.log(/abc/y);
-//		console.log(/abc/gimy);
-//		console.log(new RegExp("abc", "ymgi"));  // always gimy;
-//		console.log(new RegExp(/abc/y));
-//		console.log(new RegExp(/abc/ymgi));
-//		console.log(new RegExp(/abc/g, "i"));  // invalid;
+		//		console.log(/abc/y);
+		//		console.log(/abc/gimy);
+		//		console.log(new RegExp("abc", "ymgi"));  // always gimy;
+		//		console.log(new RegExp(/abc/y));
+		//		console.log(new RegExp(/abc/ymgi));
+		//		console.log(new RegExp(/abc/g, "i"));  // invalid;
 
 		console.groupEnd();
 
@@ -152,44 +154,44 @@
 		console.log("‰o: %o !\n‰O: %O !", { object: "value" }, { object2: "value2" });  // filled objects;
 		console.log("‰o: %o !\n‰O: %O !", { 'object': { object2: { object3: { object4: { object5: "value"}}}} }, { 'object': { object2: { object3: { object4: { object5: "value"}}}} });  // large filled objects;
 		console.groupEnd();
-		
+
 		//*/
 
 
 		//*\ Special loggin /*\
 
-//		console.group("count");
-//		for(var i = 0; i < 5; i++) {
-//			console.count("console.count");
-//		}
-//		console.groupEnd();
+		console.group("count");
+		for(var i = 0; i < 5; i++) {
+			console.count("console.count");
+		}
+		console.groupEnd();
 
-//		console.group("assert");
-//		console.assert(true == true, "true == true");
-//		console.assert(false == true, "false == true");
-//		console.groupEnd();
+		console.group("assert");
+		console.assert(true == true, "true == true");
+		console.assert(false == true, "false == true");
+		console.groupEnd();
 
-//		console.group();
-//		console.log("group without name");
-//		console.groupEnd();
+		console.group();
+		console.log("group without name");
+		console.groupEnd();
 
-//		console.group("group name 1", "group name 2");
-//		console.log("group with multiple names");
-//		console.groupEnd();
+		console.group("group name 1", "group name 2");
+		console.log("group with multiple names");
+		console.groupEnd();
 
-//		console.groupCollapsed("group collapsed");
-//		console.log("group collapsed");
-//		console.groupEnd();
+		console.groupCollapsed("group collapsed");
+		console.log("group collapsed");
+		console.groupEnd();
 
-//		console.group("group 1");
-//		console.log("multiple group");
-//		console.group("group 2");
-//		console.log("multiple group");
-//		console.group("group 3");
-//		console.log("multiple group");
-//		console.groupEnd();
-//		console.groupEnd();
-//		console.groupEnd();
+		console.group("group 1");
+		console.log("multiple group");
+		console.group("group 2");
+		console.log("multiple group");
+		console.group("group 3");
+		console.log("multiple group");
+		console.groupEnd();
+		console.groupEnd();
+		console.groupEnd();
 
 		console.group("dir");
 		console.dir();
@@ -215,15 +217,27 @@
 
 </head>
 <body>
-	<p>Hello World</p>
+	<p>
+		Hello World</p>
 
 	<script type="text/javascript">
-		/*
 		console.group("group Element");  // wait for DOM ready;
 		console.log(document.body);
 		console.log(document.createElement("div"));
 		console.groupEnd();
-		*/
+
+		console.group("dir");
+		console.dir();
+		console.dir(window);
+		console.dir(document);
+		console.dir(document.createElement("div"));
+		console.groupEnd();
+
+		console.group("dirxml");
+		console.dirxml();
+		console.dirxml(document.body);
+		console.dirxml(document.createElement("div"));
+		console.groupEnd();
 	</script>
 
 </body>

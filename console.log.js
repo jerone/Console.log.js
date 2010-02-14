@@ -1,9 +1,9 @@
 ﻿/*
-Console.log.js - XB solution for logging in JavaScript (codenamed console.log.js)
+Console.log.js - Cross-Browser solution for console logging in JavaScript (codenamed console.log.js)
 
 @author Jeroen van Warmerdam (aka jerone or jeronevw) (http://www.jeroenvanwarmerdam.nl)
-@date 06-02-2010 14:00:00
-@version 0.1 Alpha
+@date 14-02-2010 16:30
+@version 0.1 Beta
 
 Copyright 2010, Jeroen van Warmerdam
 
@@ -94,6 +94,7 @@ TODO:
 * MOD: implement capital substitution patterns too; 
 * ADD: anti alert flood;
 * FIX: multiple lines alignement;
+* ADD: add latest console.profile() and console.profileEnd();
 
 */
 
@@ -106,7 +107,7 @@ TODO:
 		_loggingFn = ["log", "debug", "info", "warn", "error"],
 		_specialFn = ["assert", "clear", "count", "dir", "dirxml", "group", "groupCollapsed", "groupEnd", "profile", "profileEnd", "time", "timeEnd", "trace"];
 
-	_w_c.ConsoleLogJS = "0.1a";  // version number;
+	_w_c.ConsoleLogJS = "0.1b";  // version number;
 
 	_w_c_s = _w_c.settings = {
 		override: _w_c_s.override !== undefined ? _w_c_s.override : true, 		// override the console function;
@@ -133,7 +134,7 @@ TODO:
 				if(arg === null) {  // null;
 					result = "null";
 				}
-				else if(typeof arg === "undefined") {  // undefined;
+				else if(typeof arg === "undefined" || typeof arg === undefined) {  // undefined;
 					result = "undefined";
 				}
 				else if(arg === true || arg === false) {  // Boolean;
@@ -151,16 +152,32 @@ TODO:
 				else if(_obj.call(arg) === "[object Number]") {  // Number;
 					result = arg.toString();
 				}
+				else if(_obj.call(arg) === "[object Navigator]" || (arg.constructor && arg.constructor.toString() === "[object Navigator]")) {  // Navigator Element (before Element, Array & Object);
+					result = "Navigator";
+				}
+				else if(_obj.call(arg) === "[object Window]" || (arg.constructor && arg.constructor.toString() === "[object Window]")) {  // Window Element (before Element, Array & Object);
+					result = "Window";
+				}
 				else if(arg.nodeType) {  // Element (before Array & Object);
-					result = "<" + arg.tagName.toLowerCase();
-					var i = 0, l = arg.attributes.length;
-					for(; i < l; i++) {
-						result += " " + arg.attributes[i].name + "='" + arg.attributes[i].value + "'";
+					if(arg.nodeType === 3 || arg.nodeName === "#text") {  // text node;
+						result = arg.textContent || arg.nodeValue;
+					} else if(arg.nodeType === 8 || arg.nodeName === "#comment") {  // comment node;
+						result = arg.text;
+					} else if(arg.nodeType === 9 || arg.nodeName === "#document") {  // document node;
+						result = "Document";
+					} else if(arg.tagName && arg.attributes) {
+						result = "<" + arg.tagName.toLowerCase();
+						var i = 0, l = arg.attributes.length;
+						for(; i < l; i++) {
+							result += "\t" + arg.attributes[i].name + "='" + arg.attributes[i].value + "'";
+						}
+						if(arg.childNodes.length === 0) {
+							result += "/";
+						}
+						result += ">";
+					} else {
+						result = arg.toString();
 					}
-					if(arg.childElementCount === 0) {
-						result += "/";
-					}
-					result += ">";
 				}
 				else if(_obj.call(arg) === "[object Array]") {  // Array;
 					result = "[";
@@ -183,8 +200,12 @@ TODO:
 					if(!limit) { return "{ more... }"; }
 					result = "{ ";
 					var arr_obj = [];
-					for(var key in arg) {
-						arr_obj.push("'" + key + "': " + Source(arg[key], limit - 1));
+					if(arg.length) {
+						for(var key in arg) {
+							arr_obj.push("'" + key + "': " + Source(arg[key], limit - 1));
+						}
+					} else {
+						arr_obj.push("'" + arg + "': " + arg);
 					}
 					result += arr_obj.join(", ") + " }";
 				}
@@ -207,7 +228,7 @@ TODO:
 							title = title || "";
 							var acc = arguments.callee._counters = arguments.callee._counters || {};
 							_w_c.log.call({ internal: (title !== "" ? title + " " : "") + (acc[title] = ++acc[title] || 1) }, "");
-							acc = title = null;  // clean up;
+							title = acc = null;
 						};
 					case "group":
 					case "groupCollapsed":
@@ -236,7 +257,7 @@ TODO:
 							if(name && timer) {
 								_w_c.info.call({ internal: name + ": " + ((new Date).getTime() - timer) + "ms" }, "");
 							}
-							timer = name = null;  // clean up;
+							name = timer = null;
 						};
 					case "trace":
 						return function() {
@@ -259,14 +280,54 @@ TODO:
 							}
 						};
 					case "dir":
-						return function(obj) {
+						return function(arg) {
 							var result = "";
-							for(var i in obj) {
-								result += i.toString() + "		" + Source(obj[i], _w_c_s.limit) + "\n";
+							if(_obj.call(arg) === "[object String]") {  // String;
+								arg = arg.split("");
+							}
+							try {
+								for(var item in arg) {
+									result += item.toString() + "\t\t";
+									try {
+										result += Source(arg[item], _w_c_s.limit) + "\n";
+									} catch(e) {  // probably Packages, sun, java, netscape or external;
+										result += item.toString() + "\n";
+									}
+								}
+							} catch(e) {  // probably Packages, sun, java, netscape or external;
+								result += "boe" + "\n";
 							}
 							_w_c.log.call({ internal: result }, "");
+							arg = result = null;
 						};
 					case "dirxml":
+						return function(node) {
+							if(node && node.nodeType) {  // Element;
+								var SourceXML = function(node, limit) {
+									var result, begin = result = Source(node, _w_c_s.limit), i = 0, l = node.childNodes.length, closingTag = /\<([a-z]*)\b/i, noTextNode = false;
+									if(l > 0) {
+										for(; i < l; i++) {
+											var newNode = node.childNodes[i];
+											if((noTextNode = newNode.nodeType !== 3 && newNode.nodeName !== "#text")) {
+												result += "\n\t";
+											}
+											if(limit > 0 && newNode.childNodes.length > 0) {
+												result += SourceXML(newNode, limit - 1);
+											} else {
+												result += Source(newNode, _w_c_s.limit);
+											}
+										}
+										if(noTextNode) {
+											result += "\n\t";
+										}
+										result += "</" + begin.match(closingTag)[1] + ">";  // closing tag;
+									}
+									node = limit = begin = i = l = closingTag = noTextNode = null;
+									return result;
+								}
+								_w_c.log.call({ internal: SourceXML(node, _w_c_s.limit) }, "");
+							}
+						};
 					case "profile":
 					case "profileEnd":
 					default:
@@ -313,7 +374,7 @@ TODO:
 							}
 						}
 						_Console(align + prefix + (this.internal || "") + _Source);
-						prefix = _Source = i = l = limit = null;  // clean up;
+						prefix = _Source = i = l = limit = null;
 						return arguments;
 					};
 				})(_fn);
@@ -332,6 +393,6 @@ TODO:
 		_w.console = _w_c;
 	}
 
-	_loggingFn = _specialFn = null;  // clean up;
+	_loggingFn = _specialFn = null;
 
 })(window);
