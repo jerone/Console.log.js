@@ -200,12 +200,8 @@ TODO:
 					if(!limit) { return "{ more... }"; }
 					result = "{ ";
 					var arr_obj = [];
-					if(arg.length) {
-						for(var key in arg) {
-							arr_obj.push("'" + key + "': " + Source(arg[key], limit - 1));
-						}
-					} else {
-						arr_obj.push("'" + arg + "': " + arg);
+					for(var key in arg) {
+						arr_obj.push("'" + key + "': " + Source(arg[key], limit - 1));
 					}
 					result += arr_obj.join(", ") + " }";
 				}
