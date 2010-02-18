@@ -5,7 +5,7 @@
 
 	<script type="text/javascript">
 		if(window.console || !window.console && (window.console = {})) { window.console.settings = {}; }
-		//console.settings.alert = false;
+		console.settings.alert = false;
 	</script>
 
 	<script type="text/javascript" src="console.log.js"></script>
@@ -13,26 +13,12 @@
 	<!--	<script type="text/javascript" src="http://console-log-js.googlecode.com/svn/console.log.js"></script>-->
 
 	<script type="text/javascript">
-		/*\
-		opera.postError("test");
-		opera.postError(1);
-		opera.postError({a:"a",b:"b"});
-		opera.postError({ 'object': { object2: { object3: { object4: { object5: { object6: { object7: { object8: { object9: { object10: { object11: "value"}}}}}}}}}} });
-		opera.postError(["a", "b"]);
-		opera.postError(["a", 1]);
-		opera.postError(["a", { b: "b", c: "c"}]);
-		opera.postError(["a", ["b", "c"]]);
-		opera.postError(["array", "array 2", ["array 3", "array 4", ["array 5", "array 6", ["array 7", "array 8", ["array 9", "array 10", ["array 11"]]]]]]);
-		opera.postError("a", "b");
-		\*/
-
-		//*IE*/ console.group = console.groupEnd = console.debug = console.count = console.time = console.timeEnd = function() { };
 
 		console.clear();
 
 		console.log(console);
 
-		//*\ Normal loggin /*\
+		//*\ Normal logging /*\
 
 		console.group("console");
 		console.log("log");
@@ -100,14 +86,12 @@
 		console.log(new RegExp(/abc/));
 		console.log(new RegExp(/abc/g));
 		console.log(new RegExp(/abc/mgi));
-
 		//		console.log(/abc/y);
 		//		console.log(/abc/gimy);
 		//		console.log(new RegExp("abc", "ymgi"));  // always gimy;
 		//		console.log(new RegExp(/abc/y));
 		//		console.log(new RegExp(/abc/ymgi));
 		//		console.log(new RegExp(/abc/g, "i"));  // invalid;
-
 		console.groupEnd();
 
 		console.group("null");
@@ -128,7 +112,7 @@
 
 		console.group("substitution patterns");
 		console.log("‰s: %s !\n‰S: %S !", "Bob", "Hugo"); 			// init;
-		console.log("‰s: %s !\n‰S: %S !", "Bob", "Hugo", "Klaas"); // one to many;
+		console.log("‰s: %s !\n‰S: %S !", "Bob", "Hugo", "Klaas"); 	// one to many;
 		console.log("‰s: %s !\n‰S: %S !", 1, 2); 					// integer instead of string;
 
 		console.log("‰d: %d !\n‰D: %D !", 1, 2); 					// init;
@@ -158,7 +142,7 @@
 		//*/
 
 
-		//*\ Special loggin /*\
+		//*\ Special logging /*\
 
 		console.group("count");
 		for(var i = 0; i < 5; i++) {
@@ -193,6 +177,26 @@
 		console.groupEnd();
 		console.groupEnd();
 
+		console.time("timer");
+		window.setTimeout(function() {
+			console.group("timer");
+			console.timeEnd("timer");
+			console.groupEnd();
+		}, 1500);
+
+		//*/
+	</script>
+
+</head>
+<body>
+	<p>Hello World</p>
+
+	<script type="text/javascript">
+		console.group("group Element");  // wait for DOM ready;
+		console.log(document.body);
+		console.log(document.createElement("div"));
+		console.groupEnd();
+
 		console.group("dir");
 		console.dir();
 		console.dir("String");
@@ -203,31 +207,6 @@
 		console.dir({});
 		console.dir({ 'object': { object2: { object3: { object4: { object5: { object6: { object7: { object8: { object9: { object10: { object11: "value"}}}}}}}}}} });
 		console.dir(console);
-		console.groupEnd();
-
-		console.group("timer");
-		console.time("timer");
-		window.setTimeout(function() {
-			console.timeEnd("timer");
-			console.groupEnd();
-		}, 1500);
-
-		//*/
-	</script>
-
-</head>
-<body>
-	<p>
-		Hello World</p>
-
-	<script type="text/javascript">
-		console.group("group Element");  // wait for DOM ready;
-		console.log(document.body);
-		console.log(document.createElement("div"));
-		console.groupEnd();
-
-		console.group("dir");
-		console.dir();
 		console.dir(window);
 		console.dir(document);
 		console.dir(document.createElement("div"));
