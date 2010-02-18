@@ -28,13 +28,14 @@ XB (CrossBrowser):
 |			console --> Firebug (http://getfirebug.com/wiki/index.php/Console_API);
 |							Object, Element, Array and Date are linkable for more information;
 |							commands with no arguments show a very small logline without information;
-|							multiple arguments are combined together with a space;
+|							multiple arguments are combined together with a space (space-delimited);
 |							multilines possible;
 |							logging functions return "undefined";
 |							empty Array value's are printed as "undefined";
 |							Object arguments show 1 value, rest is shown by clicking on it;
 |							Object's uses "=" for value's;
-|							capital substitution patterns uses the original arguments, without converting it to a String;
+|							substitution patterns %d, %i and %f are not converted to their datatypes;
+|							capital substitution patterns uses the original arguments, without converting it to an inline String;
 |							console.timer() uses console.info();
 |	Opera
 |		9-
@@ -53,12 +54,13 @@ XB (CrossBrowser):
 |			console --> intern (http://webkit.org/blog/197/web-inspector-redesign/);
 |							Object and Element are linkable for more information;
 |							commands with no arguments are not executed;
-|							multiple arguments are combined together with a space;
+|							multiple arguments are combined together with a space (space-delimited);
 |							multilines possible;
 |							logging functions return "undefined";
 |							empty Array value's are NOT printed;
 |							Object arguments show no value, only shown by clicking on it;
 |							Object's uses ": " for value's;
+|							lowercase substitution patterns %d, %i and %f are only printed when they match their strict datatype, otherwise 0;
 |							capital substitution patterns prints "[object Object]", except for Object's which prints the arguments;
 |							console.clear() doesn't exist and has problems with console.log.call();
 |							console.info() hasn't an icon;
@@ -67,13 +69,13 @@ XB (CrossBrowser):
 |			console --> intern (http://webkit.org/blog/197/web-inspector-redesign/);
 |							Object and Element are linkable for more information;
 |							commands with no arguments are not executed;
-|							multiple arguments are combined together with a space;
+|							multiple arguments are combined together with a space (space-delimited);
 |							multilines possible;
 |							logging functions return "undefined";
 |							empty Array value's are NOT printed;
 |							Object arguments show no value, only shown by clicking on it;
 |							Object's uses ": " for value's;
-|							capital substitution patterns prints "[object Object]", except for Object's which prints the arguments;
+|							lowercase substitution patterns %d, %i and %f are converted to their correct datatype, otherwise 0;
 |							console.clear() doesn't exist and has problems with console.log.call();
 |							console.info() hasn't an icon;
 |	IE
@@ -87,11 +89,12 @@ XB (CrossBrowser):
 |							Array's are printed with only the values, seperated by ",". Also Array's in Array's;
 |							console.debug(), console.group(), console.groupEnd(), console.count(), console.time() and console.timeEnd() don't exist;
 |							console.log() adds "LOG: " before every message;
+|							lowercase substitution patterns %d, %i and %f are only printed when they match their strict datatype, otherwise 0 and with float NaN;
+|							capital substitution patterns are not supported;
 |							RegExp flags are in "igm" order, instead of "gim";
 |							empty RegExp returns "//" instead of "/(?:)/";
 
 TODO:
-* MOD: implement capital substitution patterns too; 
 * ADD: anti alert flood;
 * FIX: multiple lines alignement;
 * ADD: add latest console.profile() and console.profileEnd();
@@ -121,7 +124,7 @@ TODO:
 
 		var IE = (/msie/i.test(_uA) && !/opera/i.test(_uA)),
 			WebKit = / AppleWebKit\//.test(_uA),
-			Pattern = /%([sdifo])/g,  // substitution patterns;
+			Pattern = /%([sdifo])/gi,  // substitution patterns;
 			Console = function(type) {
 				return (_w_c_s.ie_dt && IE && (type && _w_c[type] || _w_c["log"]))
 					|| (_w_c_s.opera && _w.opera && opera.postError)
@@ -355,12 +358,12 @@ TODO:
 						if(l == 1) {  // single argument;
 							_Source = Source(_Source, limit);
 						} else if(l > 1) {  // multiple arguments;
-							if(Pattern.test(_Source)) {  // substitution patterns;
+							if(_Source.match(Pattern)) {  // substitution patterns;
 								var match, count = 0;
-								while((match = Pattern.exec(_Source))) {
+								while((match = _Source.match(Pattern))) {
 									_Source = _Source.replace(match[0], Source(arguments[++count], limit));
 								}
-								while(l > count++) {
+								while(++count < l) {
 									_Source += " " + Source(arguments[count], limit);
 								}
 							} else {

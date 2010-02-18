@@ -124,12 +124,16 @@
 		console.log("‰d: %d !\n‰D: %D !", 1, 2); 					// init;
 		console.log("‰d: %d !\n‰D: %D !", 1, 2, 3); 				// one to many;
 		console.log("‰d: %d !\n‰D: %D !", "1", "2"); 				// string integer;
+		console.log("‰d: %d !\n‰D: %D !", "1abc", "2abc"); 			// string integer + text;
+		console.log("‰d: %d !\n‰D: %D !", "abc1", "abc2"); 			// string text + integer;
 		console.log("‰d: %d !\n‰D: %D !", 1.1, 2.1); 				// float;
 		console.log("‰d: %d !\n‰D: %D !", "1.1", "2.1"); 			// string float;
 
 		console.log("‰i: %i !\n‰I: %I !", 3, 4); 					// init;
 		console.log("‰i: %i !\n‰I: %I !", 3, 4, 5); 				// one to many;
 		console.log("‰i: %i !\n‰I: %I !", "3", "4"); 				// string integer;
+		console.log("‰i: %i !\n‰I: %I !", "3abc", "4abc"); 			// string integer + text;
+		console.log("‰i: %i !\n‰I: %I !", "abc3", "abc4"); 			// string text + integer;
 		console.log("‰i: %i !\n‰I: %I !", 3.1, 4.1); 				// float;
 		console.log("‰i: %i !\n‰I: %I !", "3.1", "4.1"); 			// string float;
 
@@ -138,6 +142,8 @@
 		console.log("‰f: %f !\n‰F: %F !", 5.5, 6.5); 				// float .5 (shouldn't round down);
 		console.log("‰f: %f !\n‰F: %F !", 5.6, 6.6); 				// float .6 (shouldn't round up);
 		console.log("‰f: %f !\n‰F: %F !", "5.6", "6.6"); 			// string float .6;
+		console.log("‰f: %f !\n‰F: %F !", "5.6abc", "6.6abc"); 		// string integer + text;
+		console.log("‰f: %f !\n‰F: %F !", "abc5.6", "abc6.6"); 		// string text + integer;
 
 		console.log("‰o: %o !\n‰O: %O !", {}, {}); 					// init;
 		console.log("‰o: %o !\n‰O: %O !", {}, {}, {}); 				// one to many;
