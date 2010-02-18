@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>Console.log.js</title>
+
+	<script type="text/javascript">
+		if(window.console || !window.console && (window.console = {})) { window.console.settings = {}; }
+		//console.settings.alert = false;
+	</script>
+
+	<script type="text/javascript" src="console.log.js"></script>
+
+	<!--	<script type="text/javascript" src="http://console-log-js.googlecode.com/svn/console.log.js"></script>-->
+
+	<script type="text/javascript">
+		/*\
+		opera.postError("test");
+		opera.postError(1);
+		opera.postError({a:"a",b:"b"});
+		opera.postError({ 'object': { object2: { object3: { object4: { object5: { object6: { object7: { object8: { object9: { object10: { object11: "value"}}}}}}}}}} });
+		opera.postError(["a", "b"]);
+		opera.postError(["a", 1]);
+		opera.postError(["a", { b: "b", c: "c"}]);
+		opera.postError(["a", ["b", "c"]]);
+		opera.postError(["array", "array 2", ["array 3", "array 4", ["array 5", "array 6", ["array 7", "array 8", ["array 9", "array 10", ["array 11"]]]]]]);
+		opera.postError("a", "b");
+		\*/
+
+		//*IE*/ console.group = console.groupEnd = console.debug = console.count = console.time = console.timeEnd = function() { };
+
+		console.clear();
+
+		console.log(console);
+
+		//*\ Normal loggin /*\
+
+		console.group("console");
+		console.log("log");
+		console.debug("debug");
+		console.info("info");
+		console.warn("warn");
+		console.error("error");
+		console.groupEnd();
+
+		console.group("no arguments");
+		console.log();
+		console.debug();
+		console.info();
+		console.warn();
+		console.error();
+		console.groupEnd();
+
+		console.group("String");
+		console.log(new String());
+		console.log(new String("string"));
+		console.log("string");
+		console.groupEnd();
+
+		console.group("Number");
+		console.log(new Number());
+		console.log(new Number(12345));
+		console.log(new Number("12345"));
+		console.log(12345);
+		console.groupEnd();
+
+		console.group("Date");
+		console.log(new Date());
+		console.groupEnd();
+
+		console.group("Array");
+		console.log(new Array());
+		console.log(new Array(2));
+		console.log([]);
+		console.log(["array", "array 2"]);
+		console.log(["array", "array 2", "array 3", "array 4", "array 5", "array 6", "array 7", "array 8", "array 9", "array 10", "array 11"]);
+		console.log(["array", "array 2", ["array 3", "array 4", ["array 5", "array 6", ["array 7", "array 8", ["array 9", "array 10", ["array 11"]]]]]]);
+		console.groupEnd();
+
+		console.group("Object");
+		console.log(new Object());
+		console.log({});
+		console.log({ object: "value" });
+		console.log({ 'object': "value" });
+		console.log({ 'object': 12345 });
+		console.log({ 'object': { object2: { object3: "value"}} });
+		console.log({ 'object': { object2: { object3: { object4: { object5: { object6: { object7: { object8: { object9: { object10: { object11: "value"}}}}}}}}}} });
+		console.groupEnd();
+
+		console.group("RegExp");
+		console.log(/abc/);
+		console.log(/abc/g);
+		console.log(/abc/i);
+		console.log(/abc/m);
+		console.log(/abc/gim);
+		console.log(new RegExp());
+		console.log(new RegExp(""));
+		console.log(new RegExp("abc", "g"));
+		console.log(new RegExp("abc", "g", "i"));  // no more then 2 arguments;
+		console.log(new RegExp("abc", "mgi"));  // always gim;
+		console.log(new RegExp(/abc/));
+		console.log(new RegExp(/abc/g));
+		console.log(new RegExp(/abc/mgi));
+
+		//		console.log(/abc/y);
+		//		console.log(/abc/gimy);
+		//		console.log(new RegExp("abc", "ymgi"));  // always gimy;
+		//		console.log(new RegExp(/abc/y));
+		//		console.log(new RegExp(/abc/ymgi));
+		//		console.log(new RegExp(/abc/g, "i"));  // invalid;
+
+		console.groupEnd();
+
+		console.group("null");
+		console.log(null);
+		console.groupEnd();
+
+		console.group("undefined");
+		console.log(undefined);
+		console.groupEnd();
+
+		console.group("multiple arguments");
+		console.log("String", 42, [], {});
+		console.groupEnd();
+
+		console.group("multiline");
+		console.log("multi\nline");
+		console.groupEnd();
+
+		console.group("substitution patterns");
+		console.log("‰s: %s !\n‰S: %S !", "Bob", "Hugo"); 			// init;
+		console.log("‰s: %s !\n‰S: %S !", "Bob", "Hugo", "Klaas"); // one to many;
+		console.log("‰s: %s !\n‰S: %S !", 1, 2); 					// integer instead of string;
+
+		console.log("‰d: %d !\n‰D: %D !", 1, 2); 					// init;
+		console.log("‰d: %d !\n‰D: %D !", 1, 2, 3); 				// one to many;
+		console.log("‰d: %d !\n‰D: %D !", "1", "2"); 				// string integer;
+		console.log("‰d: %d !\n‰D: %D !", 1.1, 2.1); 				// float;
+		console.log("‰d: %d !\n‰D: %D !", "1.1", "2.1"); 			// string float;
+
+		console.log("‰i: %i !\n‰I: %I !", 3, 4); 					// init;
+		console.log("‰i: %i !\n‰I: %I !", 3, 4, 5); 				// one to many;
+		console.log("‰i: %i !\n‰I: %I !", "3", "4"); 				// string integer;
+		console.log("‰i: %i !\n‰I: %I !", 3.1, 4.1); 				// float;
+		console.log("‰i: %i !\n‰I: %I !", "3.1", "4.1"); 			// string float;
+
+		console.log("‰f: %f !\n‰F: %F !", 5.0, 6.0); 				// init;
+		console.log("‰f: %f !\n‰F: %F !", 5.0, 6.0, 7.0);  			// one to many;
+		console.log("‰f: %f !\n‰F: %F !", 5.5, 6.5); 				// float .5 (shouldn't round down);
+		console.log("‰f: %f !\n‰F: %F !", 5.6, 6.6); 				// float .6 (shouldn't round up);
+		console.log("‰f: %f !\n‰F: %F !", "5.6", "6.6"); 			// string float .6;
+
+		console.log("‰o: %o !\n‰O: %O !", {}, {}); 					// init;
+		console.log("‰o: %o !\n‰O: %O !", {}, {}, {}); 				// one to many;
+		console.log("‰o: %o !\n‰O: %O !", { object: "value" }, { object2: "value2" });  // filled objects;
+		console.log("‰o: %o !\n‰O: %O !", { 'object': { object2: { object3: { object4: { object5: "value"}}}} }, { 'object': { object2: { object3: { object4: { object5: "value"}}}} });  // large filled objects;
+		console.groupEnd();
+
+		//*/
+
+
+		//*\ Special loggin /*\
+
+		console.group("count");
+		for(var i = 0; i < 5; i++) {
+			console.count("console.count");
+		}
+		console.groupEnd();
+
+		console.group("assert");
+		console.assert(true == true, "true == true");
+		console.assert(false == true, "false == true");
+		console.groupEnd();
+
+		console.group();
+		console.log("group without name");
+		console.groupEnd();
+
+		console.group("group name 1", "group name 2");
+		console.log("group with multiple names");
+		console.groupEnd();
+
+		console.groupCollapsed("group collapsed");
+		console.log("group collapsed");
+		console.groupEnd();
+
+		console.group("group 1");
+		console.log("multiple group");
+		console.group("group 2");
+		console.log("multiple group");
+		console.group("group 3");
+		console.log("multiple group");
+		console.groupEnd();
+		console.groupEnd();
+		console.groupEnd();
+
+		console.group("dir");
+		console.dir();
+		console.dir("String");
+		console.dir(12345);
+		console.dir([]);
+		console.dir(["array", "array 2", "array 3", "array 4", "array 5"]);
+		console.dir(["array", "array 2", "array 3"], ["array", "array 2", "array 3"]);  // --> isn't supported;
+		console.dir({});
+		console.dir({ 'object': { object2: { object3: { object4: { object5: { object6: { object7: { object8: { object9: { object10: { object11: "value"}}}}}}}}}} });
+		console.dir(console);
+		console.groupEnd();
+
+		console.group("timer");
+		console.time("timer");
+		window.setTimeout(function() {
+			console.timeEnd("timer");
+			console.groupEnd();
+		}, 1500);
+
+		//*/
+	</script>
+
+</head>
+<body>
+	<p>
+		Hello World</p>
+
+	<script type="text/javascript">
+		console.group("group Element");  // wait for DOM ready;
+		console.log(document.body);
+		console.log(document.createElement("div"));
+		console.groupEnd();
+
+		console.group("dir");
+		console.dir();
+		console.dir(window);
+		console.dir(document);
+		console.dir(document.createElement("div"));
+		console.groupEnd();
+
+		console.group("dirxml");
+		console.dirxml();
+		console.dirxml(document.body);
+		console.dirxml(document.createElement("div"));
+		console.groupEnd();
+	</script>
+
+</body>
+</html>
