@@ -294,7 +294,7 @@ TODO:
 									}
 								}
 							} catch(e) {  // probably Packages, sun, java, netscape or external;
-								result += "boe" + "\n";
+								result += arg.toString() + "\n";
 							}
 							_w_c.log.call({ internal: result }, "");
 							arg = result = null;
