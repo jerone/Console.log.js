@@ -268,15 +268,17 @@ TODO:
 						};
 					case "clear":
 						return function() {
+							var ln = "\n \n";
 							if(!WebKit) {
-								_w_c.log.call({ internal: "\n \n" }, "");
-								_w_c.log.call({ internal: "\n \n" }, "");
-								_w_c.log.call({ internal: "\n \n" }, "");
+								_w_c.log.call({ internal: ln }, "");
+								_w_c.log.call({ internal: ln }, "");
+								_w_c.log.call({ internal: ln }, "");
 							} else {
-								_w_c.log("\n \n");
-								_w_c.log("\n \n");
-								_w_c.log("\n \n");
+								_w_c.log(ln);
+								_w_c.log(ln);
+								_w_c.log(ln);
 							}
+							ln = null;
 						};
 					case "dir":
 						return function(arg) {
