@@ -8,10 +8,20 @@
 			display:inline;
 		}
 	</style>
+	
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 
 	<script type="text/javascript">
 		if(window.console || !window.console && (window.console = {})) { window.console.settings = {}; }
 		console.settings.alert = false;
+//		console.settings.override = {
+//			log: function(msg) {
+//				jQuery(function() {
+//					document.body.appendChild(document.createTextNode(msg));
+//					document.body.appendChild(document.createElement("br"));
+//				});
+//			}
+//		};
 	</script>
 
 	<script type="text/javascript" src="console.log.js"></script>
@@ -22,9 +32,9 @@
 
 		console.clear();
 
-		console.log(console);
+		//console.log(console);
 
-		//*\ Normal logging /*\
+		/*\ Normal logging /*\
 
 		console.group("console");
 		console.log("log");
@@ -154,7 +164,7 @@
 		//*/
 
 
-		//*\ Special logging /*\
+		/*\ Special logging /*\
 
 		console.group("count");
 		for(var i = 0; i < 5; i++) {
@@ -201,12 +211,13 @@
 
 </head>
 <body>
-	<h1>Console.log.js</h1> - <h2>Cross-Browser solution for console logging in JavaScript</h2> <h3>v0.1 Beta</h3>
+	<h1>Console.log.js</h1> - <h2>Cross-Browser solution for console logging in JavaScript</h2> <h3>v0.1 RC1</h3>
 	<p>Made by <a href="http://www.jeroenvanwarmerdam.nl">jerone</a></p>
 	<p></p>
 	<p>Check <a href="http://jeroenvanwarmerdam.nl/content/resources/javascript/console.log.js/">this page</a> for more information.</p>
 
 	<script type="text/javascript">
+		/*\ document body logging /*\
 		console.group("group Element");  // wait for DOM ready;
 		console.log(document.body);
 		console.log(document.createElement("div"));
@@ -232,6 +243,7 @@
 		console.dirxml(document.body);
 		console.dirxml(document.createElement("div"));
 		console.groupEnd();
+		//*/
 	</script>
 
 </body>
